@@ -1,0 +1,6 @@
+@BodegApp_HostAddress = http://localhost:5087
+
+GET {{BodegApp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
