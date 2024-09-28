@@ -11,7 +11,7 @@ namespace BodegApp.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserRepository _userRepository;
-        UserController(UserRepository userRepository)
+        public UserController(UserRepository userRepository)
         {
             _userRepository = userRepository;
         }
@@ -22,12 +22,20 @@ namespace BodegApp.Controllers
         {
             User newUser = new User()
             {
-                Id = _userRepository.Users.Max(x => x.Id),
+                Id = _userRepository.Users.Max(x => x.Id)+1,
                 Username = dto.Username,
                 Password = dto.Password,
             };
 
-            return Ok(dto);
+            _userRepository.Users.Add(newUser);
+
+            return Ok(newUser);
+        }
+
+        [HttpGet]
+        public IActionResult GetUsers()
+        {
+            return Ok(_userRepository.Users);
         }
         
     }
