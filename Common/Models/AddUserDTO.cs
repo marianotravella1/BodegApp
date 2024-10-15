@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BodegApp.DTOs
+namespace BodegApp.Models.DTOs
 {
     public class AddUserDTO
     {
@@ -8,7 +8,7 @@ namespace BodegApp.DTOs
         public string Username { get; set; }
 
         [Required]
-        [MinLength(8, ErrorMessage = "The password must be at least 8 characters long.")]
+        [MinLength(8)]
         public string Password { get; set; }
     }
 }

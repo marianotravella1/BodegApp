@@ -1,7 +1,12 @@
-﻿namespace BodegApp.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace BodegApp.Data.Entities
 {
     public class Wine
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         // El nombre del vino, requerido

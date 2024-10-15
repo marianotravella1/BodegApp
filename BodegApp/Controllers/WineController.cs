@@ -1,7 +1,10 @@
-﻿using BodegApp.Entities;
-using Data.Repositories;
+﻿using BodegApp.Data.Entities;
+using BodegApp.Models.DTOs;
+using Data.Repository.Implementations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Services.Interfaces;
 using System.Xml.Linq;
 
 namespace BodegApp.Controllers
@@ -10,35 +13,64 @@ namespace BodegApp.Controllers
     [ApiController]
     public class WineController : ControllerBase
     {
-        private readonly WineRepository _wineRepository;
-        public WineController(WineRepository wineRepository)
+        private readonly IWineServices _wineServices;
+        public WineController(IWineServices wineServices)
         {
-            _wineRepository = wineRepository;
-        }
-
-        [HttpGet]
-        public IActionResult GetWines()
-        {
-            return Ok(_wineRepository.Wines);
+            _wineServices = wineServices;
         }
 
         [HttpPost]
-        public IActionResult PostWine([FromBody] AddWineDTO wineDto)
+        [Authorize]
+        public IActionResult AddWine([FromBody] AddWineDTO addWineDTO)
         {
-            Wine newWine = new Wine()
+            try
             {
-                Id = _wineRepository.Wines.Max(w => w.Id)+1, // hardcode increment
-                Name = wineDto.Name,
-                Variety = wineDto.Variety,
-                Year = wineDto.Year,
-                Region = wineDto.Region,
-                Stock = wineDto.Stock
-            };
-
-            _wineRepository.Wines.Add(newWine);
-
-            return Ok(newWine);
+                int newWineId = _wineServices.AddWine(addWineDTO);
+                return Ok($"The Wine Id: {newWineId} has created succesfully.");
+            }
+            catch (Exception)
+            {
+                return BadRequest($"A wine with the name {addWineDTO.Name.ToUpper()} already exists and can't store duplicates.");
+            }
         }
-        
+
+        [HttpGet]
+        [Route("variety/{variety}")]
+        public IActionResult ReadWineByVariety(string variety)
+        {
+            try
+            {
+                return Ok(_wineServices.ReadWineByVariety(variety));
+            }
+            catch (Exception)
+            {
+                return NotFound("Can't get access to wines information.");
+            }
+
+        }
+
+        [HttpPut]
+        [Authorize]
+        [Route("{id}/stock")]
+        public IActionResult UpdateWinestockById(int id, [FromBody] int stock)
+        {
+            if (stock > 0)
+            {
+                try
+                {
+                    _wineServices.UpdateWinestockById(id, stock);
+                    return Ok($"Wine Id: {id}, now has {stock} bottles in stock.");
+                }
+                catch (Exception)
+                {
+                    return BadRequest("The wine Id or Stock isn't valid.");
+                }
+            }
+            else
+            {
+                return BadRequest("The input stock must be greater than 0.");
+            }
+        }
+
     }
 }

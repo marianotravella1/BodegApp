@@ -1,8 +1,9 @@
-﻿using BodegApp.DTOs;
-using BodegApp.Entities;
-using BodegApp.Repositories;
+﻿using BodegApp.Data.Entities;
+using BodegApp.Models.DTOs;
+using Data.Repository.Implementations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Services.Interfaces;
 
 namespace BodegApp.Controllers
 {
@@ -10,33 +11,25 @@ namespace BodegApp.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserRepository _userRepository;
-        public UserController(UserRepository userRepository)
+        private readonly IUserServices _userServices;
+        public UserController(IUserServices userServices)
         {
-            _userRepository = userRepository;
+            _userServices = userServices;
         }
-
 
         [HttpPost]
-        public IActionResult AddUser([FromBody] AddUserDTO dto)
+        public IActionResult AddUser([FromBody] AddUserDTO userDto)
         {
-            User newUser = new User()
+            try
             {
-                Id = _userRepository.Users.Max(x => x.Id)+1,
-                Username = dto.Username,
-                Password = dto.Password,
-            };
-
-            _userRepository.Users.Add(newUser);
-
-            return Ok(newUser);
+                int newUserId = _userServices.AddUser(userDto);
+                return Ok($"The User Id: {newUserId} has created succesfully.");
+            }
+            catch (Exception)
+            {
+                return BadRequest($"A user with the username {userDto.Username.ToUpper()} already exists and can't store duplicates");
+            }
         }
 
-        [HttpGet]
-        public IActionResult GetUsers()
-        {
-            return Ok(_userRepository.Users);
-        }
-        
     }
 }
