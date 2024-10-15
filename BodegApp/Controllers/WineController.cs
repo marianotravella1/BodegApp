@@ -1,11 +1,7 @@
-﻿using BodegApp.Data.Entities;
-using BodegApp.Models.DTOs;
-using Data.Repository.Implementations;
+﻿using BodegApp.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
-using System.Xml.Linq;
 
 namespace BodegApp.Controllers
 {
@@ -26,11 +22,11 @@ namespace BodegApp.Controllers
             try
             {
                 int newWineId = _wineServices.AddWine(addWineDTO);
-                return Ok($"The Wine Id: {newWineId} has created succesfully.");
+                return Ok($"The Wine Id: {newWineId} has been created succesfully.");
             }
             catch (Exception)
             {
-                return BadRequest($"A wine with the name {addWineDTO.Name.ToUpper()} already exists and can't store duplicates.");
+                return BadRequest($"Wine named '{addWineDTO.Name.ToUpper()}' already exists and can't store duplicates.");
             }
         }
 
