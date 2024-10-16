@@ -13,7 +13,7 @@ namespace Data.Repository.Implementations
             _context = context;
         }
 
-        public IEnumerable<User> ReadUsers()
+        public List<User> GetUsers()
         {
             return _context.Users.ToList();
         }

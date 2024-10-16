@@ -11,7 +11,7 @@ namespace Data.Repository.Interfaces
     public interface IUserRepository
     {
         User? AuthUser(CredentialsDto credentialsDTO);
-        IEnumerable<User> ReadUsers();
+        List<User> GetUsers();
         int CreateUser(User user);
     }
 }

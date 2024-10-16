@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20241015070121_UsersMigration")]
-    partial class UsersMigration
+    [Migration("20241015225556_Tables-Migrations")]
+    partial class TablesMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,6 +59,9 @@ namespace Data.Migrations
                     b.Property<int>("Stock")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("TastingId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Variety")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -68,7 +71,43 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TastingId");
+
                     b.ToTable("Wines");
+                });
+
+            modelBuilder.Entity("Data.Entities.Tasting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Guests")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tastings");
+                });
+
+            modelBuilder.Entity("BodegApp.Data.Entities.Wine", b =>
+                {
+                    b.HasOne("Data.Entities.Tasting", null)
+                        .WithMany("Wines")
+                        .HasForeignKey("TastingId");
+                });
+
+            modelBuilder.Entity("Data.Entities.Tasting", b =>
+                {
+                    b.Navigation("Wines");
                 });
 #pragma warning restore 612, 618
         }

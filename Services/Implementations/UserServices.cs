@@ -26,14 +26,14 @@ namespace Services.Inplementations
 
         public int AddUser(AddUserDTO addUserDTO)
         {
-            if (_userRepository.ReadUsers().All(u => u.Username != addUserDTO.Username))
+            if (_userRepository.GetUsers().All(u => u.Username != addUserDTO.Username))
             {
                 try
                 {
                     int newUserId = _userRepository.CreateUser(
                         new User
                         {
-                            Id = _userRepository.ReadUsers().Max(x => x.Id) + 1,
+                            Id = _userRepository.GetUsers().Max(x => x.Id) + 1,
                             Username = addUserDTO.Username,
                             Password = addUserDTO.Password
                         }
