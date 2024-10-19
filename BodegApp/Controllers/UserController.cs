@@ -22,7 +22,7 @@ namespace BodegApp.Controllers
         {
             try
             {
-                int newUserId = _userServices.AddUser(userDto);
+                int newUserId = _userServices.CreateUser(userDto);
                 return Ok($"The User Id: {newUserId} has created succesfully.");
             }
             catch (Exception)

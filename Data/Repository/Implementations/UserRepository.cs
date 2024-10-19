@@ -2,6 +2,7 @@
 using BodegApp.Data.Entities;
 using Common.Models;
 using Data.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repository.Implementations
 {
@@ -21,18 +22,10 @@ namespace Data.Repository.Implementations
         {
             return _context.Users.FirstOrDefault(u => u.Username == credentialsDto.UserName && u.Password == credentialsDto.Password);
         }
-        public int CreateUser(User user)
+        public void AddUser(User user)
         {
-            try
-            {
-                _context.Users.Add(user);
-                _context.SaveChanges();
-                return _context.Users.Max(u => u.Id);
-            }
-            catch (Exception)
-            {
-                throw new Exception();
-            }
+            _context.Users.Add(user);
+            _context.SaveChanges();
         }
     }
 }

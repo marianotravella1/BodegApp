@@ -12,6 +12,6 @@ namespace Data.Repository.Interfaces
     {
         User? AuthUser(CredentialsDto credentialsDTO);
         List<User> GetUsers();
-        int CreateUser(User user);
+        void AddUser(User user);
     }
 }
