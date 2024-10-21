@@ -42,14 +42,7 @@ namespace Services.Inplementations
 
         public void UpdateWinestockById(int id, int stock)
         {
-            try
-            {
-                _wineRepository.UpdateWinestockById(id, stock);
-            }
-            catch (Exception)
-            {
-                throw new Exception();
-            }
+            _wineRepository.UpdateWinestockById(id, stock);
         }
     }
 }
