@@ -15,24 +15,25 @@ namespace BodegApp.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IUserServices _userServices;
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration _config;
 
-        public AuthenticationController(IUserServices userServices, IConfiguration configuration)
+        public AuthenticationController(IUserServices userServices, IConfiguration config)
         {
             _userServices = userServices;
-            _configuration = configuration;
+            _config = config;
         }
 
-        [HttpPost]
-        public IActionResult AuthUser([FromBody] CredentialsDto credentialsDto)
+        [HttpPost("Authenticate")]
+        public IActionResult Authenticate([FromBody] CredentialsDto credentialsDto)
         {
             User? user = _userServices.AuthUser(credentialsDto);
+
             if (user == null)
             {
-                return Unauthorized("Username or Password are incorrect");
+                return Unauthorized();
             }
 
-            SymmetricSecurityKey securityPassword = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Authentication:SecretForKey"]!));
+            SymmetricSecurityKey securityPassword = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Authentication:SecretForKey"]!));
             SigningCredentials credentials = new SigningCredentials(securityPassword, SecurityAlgorithms.HmacSha256);
 
             List<Claim> claimsForToken = new List<Claim>()
@@ -42,11 +43,11 @@ namespace BodegApp.Controllers
             };
 
             JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
-              _configuration["Authentication:Issuer"],
-              _configuration["Authentication:Audience"],
+              _config["Authentication:Issuer"],
+              _config["Authentication:Audience"],
               claimsForToken,
               DateTime.UtcNow,
-              DateTime.UtcNow.AddMinutes(int.Parse(_configuration["Authentication:MinToExpireJWT"]!)),
+              DateTime.UtcNow.AddMinutes(int.Parse(_config["Authentication:MinToExpireJWT"]!)),
               credentials);
 
 

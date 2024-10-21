@@ -24,18 +24,15 @@ namespace Services.Inplementations
             return _userRepository.AuthUser(credentialsDto);
         }
 
-        public void CreateUser(AddUserDTO addUserDTO)
+        public void Create(AddUserDTO addUserDTO)
         {
-            if (_userRepository.GetUsers().All(u => u.Username != addUserDTO.Username))
+            User newUser = new User
             {
-                User newUser = new User
-                {
-                    Username = addUserDTO.Username,
-                    Password = addUserDTO.Password
-                };
+                Username = addUserDTO.Username,
+                Password = addUserDTO.Password
+            };
 
-                _userRepository.AddUser(newUser);
-            }
+            _userRepository.AddUser(newUser);
         }
     }
 }

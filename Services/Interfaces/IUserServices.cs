@@ -12,6 +12,6 @@ namespace Services.Interfaces
     public interface IUserServices
     {
         User? AuthUser(CredentialsDto credentialsDTO);
-        void CreateUser(AddUserDTO addUserDTO);
+        void Create(AddUserDTO addUserDTO);
     }
 }
