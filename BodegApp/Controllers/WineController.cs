@@ -17,18 +17,12 @@ namespace BodegApp.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult AddWine([FromBody] AddWineDTO addWineDTO)
+        public IActionResult CreateWine([FromBody] AddWineDTO addWineDTO)
         {
-            try
-            {
-                int newWineId = _wineServices.AddWine(addWineDTO);
-                return Ok($"The Wine Id: {newWineId} has been created succesfully.");
-            }
-            catch (Exception)
-            {
-                return BadRequest($"Wine named '{addWineDTO.Name.ToUpper()}' already exists and can't store duplicates.");
-            }
+            _wineServices.Create(addWineDTO);
+            return Ok($"The Wine {addWineDTO.Name} has been created succesfully.");
         }
+            
 
         [HttpGet]
         [Route("variety/{variety}")]

@@ -24,6 +24,7 @@ namespace Services.Inplementations
             return _userRepository.AuthUser(credentialsDto);
         }
 
+        // CORREGIR
         public void Create(AddUserDTO addUserDTO)
         {
             User newUser = new User
@@ -32,7 +33,14 @@ namespace Services.Inplementations
                 Password = addUserDTO.Password
             };
 
-            _userRepository.AddUser(newUser);
+            if (_userRepository.GetUsers().All(u => u.Username != addUserDTO.Username))
+            {
+                _userRepository.AddUser(newUser);
+            }
+            else
+            {
+                throw new Exception("Este usuario ya existe");
+            }
         }
     }
 }

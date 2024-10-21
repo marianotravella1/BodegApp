@@ -9,8 +9,8 @@ namespace Data.Repository.Interfaces
 {
     public interface IWineRepository
     {
-        IEnumerable<Wine> GetWines();
-        int AddWine(Wine wine);
+        List<Wine> GetWines();
+        void AddWine(Wine wine);
         IEnumerable<Wine> ReadWineByVariety(string variety);
         void UpdateWinestockById(int id, int stock);
     }

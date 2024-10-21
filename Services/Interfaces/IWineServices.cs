@@ -10,7 +10,7 @@ namespace Services.Interfaces
 {
     public interface IWineServices
     {
-        int AddWine(AddWineDTO addWineDTO);
+        void Create(AddWineDTO addWineDTO);
         IEnumerable<Wine> ReadWineByVariety(string variety);
         void UpdateWinestockById(int id, int stock);
     }

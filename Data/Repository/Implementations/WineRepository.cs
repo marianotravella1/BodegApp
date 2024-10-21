@@ -17,46 +17,24 @@ namespace Data.Repository.Implementations
             _context = context;
         }
 
-        public IEnumerable<Wine> GetWines()
+        public List<Wine> GetWines()
         {
             return _context.Wines.ToList();
         }
 
-        public int AddWine(Wine wine)
+        public void AddWine(Wine wine)
         {
-            try
-            {
-                _context.Add(wine);
-                _context.SaveChanges();
-                return _context.Wines.Max(w => w.Id);
-            }
-            catch (Exception)
-            {
-                throw new Exception();
-            }
+            _context.Add(wine);
+            _context.SaveChanges();
         }
         public IEnumerable<Wine> ReadWineByVariety(string variety)
         {
-            try
-            {
-                return _context.Wines.Where(w => w.Variety == variety && w.Stock > 0);
-            }
-            catch (Exception)
-            {
-                throw new Exception();
-            }
+            return _context.Wines.Where(w => w.Variety == variety && w.Stock > 0);
         }
         public void UpdateWinestockById(int id, int stock)
         {
-            try
-            {
-                _context.Wines.Single(w => w.Id == id).Stock = stock;
-                _context.SaveChanges();
-            }
-            catch (Exception)
-            {
-                throw new Exception();
-            }
+            _context.Wines.Single(w => w.Id == id).Stock = stock;
+            _context.SaveChanges();
         }
     }
 }

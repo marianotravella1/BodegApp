@@ -18,42 +18,26 @@ namespace Services.Inplementations
             _wineRepository = wineRepository;
         }
       
-        public int AddWine(AddWineDTO addWineDTO)
+        public void Create(AddWineDTO addWineDTO)
         {
             if (_wineRepository.GetWines().All(w => w.Name != addWineDTO.Name))
             {
-                try
+                Wine newWine = new Wine()
                 {
-                    int newWineId = _wineRepository.AddWine(
-                    new Wine
-                    {
-                        Name = addWineDTO.Name,
-                        Variety = addWineDTO.Variety,
-                        Year = addWineDTO.Year,
-                        Region = addWineDTO.Region,
-                        Stock = addWineDTO.Stock,
-                    }
-                    );
-                    return newWineId;
-                }
-                catch (Exception)
-                {
-                    throw new Exception();
-                }
+                    Name = addWineDTO.Name,
+                    Variety = addWineDTO.Variety,
+                    Year = addWineDTO.Year,
+                    Region = addWineDTO.Region,
+                    Stock = addWineDTO.Stock,
+                };
+
+                _wineRepository.AddWine(newWine);
             }
-            else throw new InvalidOperationException();
         }
 
         public IEnumerable<Wine> ReadWineByVariety(string variety)
         {
-            try
-            {
-                return _wineRepository.ReadWineByVariety(variety);
-            }
-            catch (Exception)
-            {
-                throw new Exception();
-            }
+            return _wineRepository.ReadWineByVariety(variety);
         }
 
         public void UpdateWinestockById(int id, int stock)
