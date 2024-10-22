@@ -26,7 +26,7 @@ namespace BodegApp.Controllers
 
         [HttpGet]
         [Route("variety/{variety}")]
-        public IActionResult ReadWineByVariety(string variety)
+        public IActionResult ReadWineByVariety([FromRoute]string variety)
         {
             try
             {
@@ -34,33 +34,25 @@ namespace BodegApp.Controllers
             }
             catch (Exception)
             {
-                return NotFound("Can't get access to wines information.");
+                return NotFound();
             }
 
         }
 
         [HttpPut]
         [Authorize]
-        [Route("{id}/stock")]
-        public IActionResult UpdateWinestockById(int id, [FromBody] int stock)
+        [Route("{id}/{stock}")]
+        public IActionResult UpdateWinestockById([FromRoute]int id, [FromRoute] int stock)
         {
-            if (stock > 0)
+            try
             {
-                try
-                {
-                    _wineServices.UpdateWinestockById(id, stock);
-                    return Ok($"Wine Id: {id}, now has {stock} bottles in stock.");
-                }
-                catch (Exception)
-                {
-                    return BadRequest("The wine Id or Stock isn't valid.");
-                }
+                _wineServices.UpdateWinestockById(id, stock);
+                return Ok($"Wine Id: {id}, now has {stock} bottles in stock.");
             }
-            else
+            catch (Exception)
             {
-                return BadRequest("The input stock must be greater than 0.");
+                return BadRequest();
             }
         }
-
     }
 }

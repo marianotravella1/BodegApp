@@ -21,8 +21,15 @@ namespace BodegApp.Controllers
         [HttpPost]
         public IActionResult CreateUser([FromBody] AddUserDTO userDto)
         {
-            _userServices.Create(userDto);
-            return Created();
+            try
+            {
+                _userServices.Create(userDto);
+                return Created();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
     }

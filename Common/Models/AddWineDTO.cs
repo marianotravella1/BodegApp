@@ -3,9 +3,9 @@
     public class AddWineDTO
     {
         public string Name { get; set; } = string.Empty;
-        public string Variety { get; set; }
+        public string? Variety { get; set; }
         public int Year { get; set; }
-        public string Region { get; set; }
+        public string? Region { get; set; }
 
         private int _stock;
         public int Stock

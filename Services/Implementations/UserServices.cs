@@ -27,19 +27,19 @@ namespace Services.Inplementations
         // CORREGIR
         public void Create(AddUserDTO addUserDTO)
         {
-            User newUser = new User
-            {
-                Username = addUserDTO.Username,
-                Password = addUserDTO.Password
-            };
-
             if (_userRepository.GetUsers().All(u => u.Username != addUserDTO.Username))
             {
+                User newUser = new User
+                {
+                    Username = addUserDTO.Username,
+                    Password = addUserDTO.Password
+                };
+
                 _userRepository.AddUser(newUser);
             }
             else
             {
-                throw new Exception("Este usuario ya existe");
+                throw new Exception($"The username {addUserDTO.Username} already exists");
             }
         }
     }

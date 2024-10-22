@@ -13,13 +13,13 @@ namespace BodegApp.Data.Entities
         public string Name { get; set; } = string.Empty;
 
         // Variedad del vino (ej: Cabernet Sauvignon)
-        public string Variety { get; set; } = string.Empty;
+        public string? Variety { get; set; } = string.Empty;
 
         // Año de cosecha, debe ser un valor válido
         public int Year { get; set; }
 
         // Región de origen (ej: Mendoza, La Rioja)
-        public string Region { get; set; } = string.Empty;
+        public string? Region { get; set; } = string.Empty;
 
         // Cantidad disponible en stock, debe ser mayor o igual a 0
         private int _stock;
